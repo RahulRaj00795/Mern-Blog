@@ -14,7 +14,7 @@ const fs = require('fs');
 const salt = bcrypt.genSaltSync(10);
 const secret = 'asdfe45we45w345wegw345werjktjwertkj';
 
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ credentials: true, origin: ['http://localhost:3000', 'https://65d1c70d1a487433b981a87e--cheerful-daffodil-239665.netlify.app'] }));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
@@ -63,6 +63,7 @@ app.get('/profile', (req, res) => {
   const { token } = req.cookies;
   jwt.verify(token, secret, {}, (err, info) => {
     if (err) throw err;
+    res.setHeader('Access-Control-Allow-Origin', 'https://65d1c70d1a487433b981a87e--cheerful-daffodil-239665.netlify.app');
     res.json(info);
   });
 });
@@ -142,4 +143,6 @@ app.get('/post/:id', async (req, res) => {
   res.json(postDoc);
 })
 
-app.listen(4000);
+app.listen(4000, () => {
+  console.log('Server is running on port 4000');
+});
